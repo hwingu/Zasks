@@ -1,11 +1,10 @@
-import Image from "next/image";
 import { auth } from "@clerk/nextjs";
-import { SignOutButton } from "@clerk/nextjs";
 import { prisma } from "../lib/db";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import LoginButton from "@/components/LoginButton";
 import TaskItem from "@/components/TaskItem";
+import { UserButton } from '@clerk/nextjs'
+
 
 export default async function Home() {
   const user = auth();
@@ -26,7 +25,7 @@ export default async function Home() {
           <Button asChild className="mx-2">
             <Link href={"/newTask"}>New</Link>
           </Button>
-          <LoginButton />
+          <UserButton />
         </div>
       </div>
       <TaskItem tasks={tasks} />

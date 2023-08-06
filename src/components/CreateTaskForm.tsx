@@ -57,8 +57,8 @@ const CreateTaskForm = (props: Props) => {
                 </FormItem>
               )}
             />
-            <div className="flex justify-end mx-1">
-              <Link className={buttonVariants()} href={"/"}>
+            <div className="flex justify-end">
+              <Link className={`${buttonVariants()} mx-2`} href={"/"}>
                 Back
               </Link>
               <Button type="submit">Submit</Button>
