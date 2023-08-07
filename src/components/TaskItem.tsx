@@ -2,16 +2,17 @@ import React from "react";
 import Link from "next/link";
 import CheckBoxAndTitle from "./CheckBoxAndTitle";
 import DeleteButton from "./DeleteButton";
+import { prisma } from "../lib/db";
+import { Badge } from "./ui/badge";
 
 type Props = {
   tasks: any;
 };
 
-const TaskItem = (props: Props) => {
+const TaskItem = async (props: Props) => {
   return (
     <>
-    
-      {props.tasks.map((task: any) => {
+      {props.tasks.map(async (task: any) => {
         return (
           <div className="my-4 py-4 px-2 border border-slate-300 rounded-lg">
             <div className="flex justify-between ">
@@ -20,16 +21,30 @@ const TaskItem = (props: Props) => {
                   taskId={task.id}
                   taskCompleted={task.completed}
                 />
-                <Link href={`/tasks/${task.id}`}>
+                <Link href={`/${task.id}?taskName=${task.name}`}>
                   <label
                     className={
                       !task.completed
-                        ? "text-sm font-medium leading-none my-auto hover:cursor-pointer"
-                        : "text-sm font-medium leading-none line-through opacity-70 my-auto hover:cursor-pointer"
+                        ? "flex text-sm font-medium leading-none my-auto hover:cursor-pointer"
+                        : "flex text-sm font-medium leading-none line-through opacity-70 my-auto hover:cursor-pointer"
                     }
                   >
                     {task.name}
                   </label>
+                  {(await prisma.tasks.count({
+                    where: {
+                      taskId: task.id,
+                    },
+                  })) >= 1 ? (
+                    <Badge className="bg-slate-200 text-slate-900">
+                      {/* Content inside the badge */}
+                      {prisma.tasks.count({
+                        where: {
+                          taskId: task.id,
+                        },
+                      })}
+                    </Badge>
+                  ) : null}
                 </Link>
               </div>
               <DeleteButton taskId={task.id} />
