@@ -31,20 +31,22 @@ const TaskItem = async (props: Props) => {
                   >
                     {task.name}
                   </label>
-                  {(await prisma.tasks.count({
-                    where: {
-                      taskId: task.id,
-                    },
-                  })) >= 1 ? (
-                    <Badge className="bg-slate-200 text-slate-900">
-                      {/* Content inside the badge */}
-                      {prisma.tasks.count({
-                        where: {
-                          taskId: task.id,
-                        },
-                      })}
-                    </Badge>
-                  ) : null}
+                  <div>
+                    {(await prisma.tasks.count({
+                      where: {
+                        taskId: task.id,
+                      },
+                    })) >= 1 ? (
+                      <Badge className="bg-slate-200 text-slate-900">
+                        {prisma.tasks.count({
+                          where: {
+                            taskId: task.id,
+                          },
+                        })}
+                      </Badge>
+                    ) : null}
+                    {task.tags.map(tag => <Badge>{tag.name}</Badge>)}
+                  </div>
                 </Link>
               </div>
               <DeleteButton taskId={task.id} />

@@ -10,12 +10,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Tasks { 
-  id String @id @default(uuid())
-  name String
-  userId String
-  taskId String @default("")
-  completed Boolean @default(false)
+model Tasks {
+  id        String   @id @default(uuid())
+  name      String
+  userId    String
+  taskId    String   @default("")
+  completed Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  tags      Tags[]
+}
+
+model Tags {
+  id     String @id @default(uuid())
+  name   String
+  task   Tasks  @relation(fields: [taskId], references: [id])
+  taskId String
 }
