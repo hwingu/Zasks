@@ -33,8 +33,8 @@ export async function deleteTask(id: string) {
   const taskDelete = await prisma.tasks.deleteMany({
     where: {
       taskId: id,
-    }
-  })
+    },
+  });
 }
 
 export async function updateComplete(id: string, completed: boolean) {
@@ -46,4 +46,25 @@ export async function updateComplete(id: string, completed: boolean) {
       completed: !completed,
     },
   });
+}
+
+export async function updateTag(name: string, tagId: string, taskId:string) {
+  const createdTag = await prisma.tasks.update({
+    where: {
+      id: taskId
+    },
+    data: {
+      tags: {
+        connect: { id: tagId },
+      },
+    },
+  });
+}
+
+export async function createTag(name:string){
+  const createTag = await prisma.tags.create({
+    data: {
+      name:name,
+    }
+  })
 }

@@ -36,12 +36,12 @@ const CreateTaskForm = (props: Props) => {
   
     async function onSubmit(values: z.infer<typeof taskSchema>) {
       createTask(values.name,props.userId)
-      router.push("/");
+      router.back();
       router.refresh();
     }
   
     return (
-      <div>
+      <div className="container mx-auto">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -51,7 +51,7 @@ const CreateTaskForm = (props: Props) => {
                 <FormItem>
                   <FormLabel>Task</FormLabel>
                   <FormControl>
-                    <Input placeholder="Task..." {...field} />
+                    <Input placeholder="Task name..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

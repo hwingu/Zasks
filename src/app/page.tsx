@@ -16,23 +16,29 @@ export default async function Home() {
       taskId: "",
     },
     include: {
-      tags:true,
-    }
+      tags: true,
+    },
   });
+
 
 
   return (
     <main className="">
       <div className="flex justify-between border-b px-4 h-16 items-center">
-        <h1 className="text-2xl font-extrabold">Task Manager</h1>
+        <h1 className="text-2xl font-extrabold">Zasks</h1>
         <div className="flex ">
+          <Button asChild>
+            <Link href={"/newTag"}>Create tag</Link>
+          </Button>
           <Button asChild className="mx-2">
             <Link href={"/newTask"}>New</Link>
           </Button>
           <UserButton />
         </div>
       </div>
-      <TaskItem tasks={tasks} />
+      <div className="container mx-auto">
+        <TaskItem tasks={tasks} />
+      </div>
     </main>
   );
 }
