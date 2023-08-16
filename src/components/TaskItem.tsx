@@ -2,14 +2,18 @@ import React from "react";
 import Link from "next/link";
 import CheckBoxAndTitle from "./CheckBoxAndTitle";
 import DeleteButton from "./DeleteButton";
+import AddTaskItemBadge from "./AddTaskItemBadge";
+import TaskItemCount from "./TaskItemCount";
+import TaskItemBadge from "./TaskItemBadge";
 import { prisma } from "../lib/db";
-import { Badge } from "./ui/badge";
+import { buttonVariants } from "./ui/button";
 
 type Props = {
   tasks: any;
 };
 
 const TaskItem = async (props: Props) => {
+  const tags = await prisma.tags.findMany();
   return (
     <>
       {props.tasks.map(async (task: any) => {
@@ -21,33 +25,23 @@ const TaskItem = async (props: Props) => {
                   taskId={task.id}
                   taskCompleted={task.completed}
                 />
-                <Link href={`/${task.id}?taskName=${task.name}`}>
-                  <label
-                    className={
-                      !task.completed
-                        ? "flex text-sm font-medium leading-none my-auto hover:cursor-pointer"
-                        : "flex text-sm font-medium leading-none line-through opacity-70 my-auto hover:cursor-pointer"
-                    }
-                  >
-                    {task.name}
-                  </label>
-                  <div>
-                    {(await prisma.tasks.count({
-                      where: {
-                        taskId: task.id,
-                      },
-                    })) >= 1 ? (
-                      <Badge className="bg-slate-200 text-slate-900">
-                        {prisma.tasks.count({
-                          where: {
-                            taskId: task.id,
-                          },
-                        })}
-                      </Badge>
-                    ) : null}
-                    {task.tags.map(tag => <Badge>{tag.name}</Badge>)}
-                  </div>
-                </Link>
+                <div className="">
+                  <Link href={`/${task.id}?taskName=${task.name}`} className="hover:bg-opacity-75">
+                    <label
+                      className={
+                        !task.completed
+                          ? "flex text-sm font-medium leading-none my-auto hover:cursor-pointer"
+                          : "flex text-sm font-medium leading-none line-through opacity-70 my-auto hover:cursor-pointer"
+                      }
+                    >
+                      {task.name}
+                    </label>
+
+                    <TaskItemCount task={task} />
+                    <TaskItemBadge task={task} />
+                  </Link>
+                  <AddTaskItemBadge task={task} tags={tags} />
+                </div>
               </div>
               <DeleteButton taskId={task.id} />
             </div>

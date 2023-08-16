@@ -22,8 +22,7 @@ model Tasks {
 }
 
 model Tags {
-  id     String @id @default(uuid())
-  name   String
-  task   Tasks  @relation(fields: [taskId], references: [id])
-  taskId String
+  id    String  @id @default(uuid())
+  name  String
+  tasks Tasks[]
 }

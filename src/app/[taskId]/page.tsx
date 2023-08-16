@@ -23,6 +23,9 @@ const page = async ({ params, searchParams }: Props) => {
         taskId: params.taskId,
       },
     },
+    include: {
+      tags: true,
+    },
   });
 
   const taskCompleted = await prisma.tasks.findUnique({
@@ -50,7 +53,9 @@ const page = async ({ params, searchParams }: Props) => {
           <UserButton />
         </div>
       </div>
-      <TaskItem tasks={tasks} />
+      <div className="container mx-auto">
+        <TaskItem tasks={tasks} />
+      </div>
     </main>
   );
 };

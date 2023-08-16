@@ -15,32 +15,27 @@ import {
 import { Input } from "@/components/ui/input";
 import { buttonVariants } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { createTaskSpecific } from "../lib/taskFunctions";
+import { createTag } from "../lib/taskFunctions";
 
-type Props = {
-  userId: string;
-  taskId: string;
-};
+type Props = {};
 
-const taskSchema = z.object({
+const tagSchema = z.object({
   name: z.string().min(1, {
-    message: "Task cannot be empty",
+    message: "Tag cannot be empty",
   }),
 });
 
-const CreateTaskFormSpecific = (props: Props) => {
+const CreateTagForm = (props: Props) => {
   const router = useRouter();
-  const form = useForm<z.infer<typeof taskSchema>>({
-    resolver: zodResolver(taskSchema),
+  const form = useForm<z.infer<typeof tagSchema>>({
+    resolver: zodResolver(tagSchema),
     defaultValues: {},
   });
-
-  async function onSubmit(values: z.infer<typeof taskSchema>) {
-    createTaskSpecific(values.name, props.userId, props.taskId);
-    router.back();
+  function onSubmit(values: z.infer<typeof tagSchema>) {
+    createTag(values.name);
     router.refresh();
+    router.back();
   }
-
   return (
     <div className="container mx-auto">
       <Form {...form}>
@@ -50,16 +45,18 @@ const CreateTaskFormSpecific = (props: Props) => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Task</FormLabel>
+                <FormLabel>Tag</FormLabel>
                 <FormControl>
-                  <Input placeholder="Task..." {...field} />
+                  <Input placeholder="Tag name..." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
           <div className="flex justify-end">
-            <Button onClick={() => router.back()} className="mx-2">Back</Button>
+            <Link className={`${buttonVariants()} mx-2`} href={"/"}>
+              Back
+            </Link>
             <Button type="submit">Submit</Button>
           </div>
         </form>
@@ -68,4 +65,4 @@ const CreateTaskFormSpecific = (props: Props) => {
   );
 };
 
-export default CreateTaskFormSpecific;
+export default CreateTagForm;
