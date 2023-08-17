@@ -9,7 +9,7 @@ const TaskItemBadge = (props: Props) => {
   return (
     <>
       {props.task.tags.map((tag: any) => (
-        <Badge className="rounded-md mr-1">{tag.name}</Badge>
+        <Badge className="rounded-md mr-1" key={tag.id}>{tag.name}</Badge>
       ))}
     </>
   );
