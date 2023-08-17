@@ -13,10 +13,11 @@ const TagOptions = (props: Props) => {
   const router = useRouter();
   return (
     <Button
+      key={props.tag.id}
       variant={"ghost"}
       className="p-1 mb-1 cursor-pointer hover:opacity-80"
       onClick={() => {
-        updateTag(props.tag.name, props.tag.id,props.task.id);
+        updateTag(props.tag.name, props.tag.id, props.task.id);
         router.refresh();
       }}
     >

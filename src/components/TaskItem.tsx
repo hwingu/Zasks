@@ -20,7 +20,7 @@ const TaskItem = async (props: Props) => {
         return (
           <div className="my-4 py-4 px-2 border border-slate-300 rounded-lg" key={task.id}>
             <div className="flex justify-between ">
-              <div className="items-top flex space-x-2 max-w-xs truncate lg:max-w-2xl ">
+              <div className="items-top flex space-x-2 max-w-xs truncate lg:max-w-2xl">
                 <CheckBoxAndTitle
                   taskId={task.id}
                   taskCompleted={task.completed}
