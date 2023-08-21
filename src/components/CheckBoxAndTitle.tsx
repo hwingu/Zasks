@@ -3,6 +3,7 @@ import React from "react";
 import { Checkbox } from "./ui/checkbox";
 import { updateComplete } from "../lib/taskFunctions";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 type Props = {
   taskId: string;
   taskCompleted: boolean;
@@ -10,13 +11,15 @@ type Props = {
 
 const CheckBoxAndTitle = (props: Props) => {
   const router = useRouter();
+  const [taskCompleted, setTaskCompleted] = useState(props.taskCompleted);
   return (
     <Checkbox
       onClick={() => {
-        updateComplete(props.taskId, props.taskCompleted);
+        setTaskCompleted(!taskCompleted)
+        updateComplete(props.taskId, taskCompleted);
         router.refresh();
       }}
-      checked={props.taskCompleted}
+      checked={taskCompleted}
       className="w-9 h-9"
     />
   );

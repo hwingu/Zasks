@@ -16,8 +16,12 @@ import { Input } from "@/components/ui/input";
 import { buttonVariants } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { createTag } from "../lib/taskFunctions";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
-type Props = {};
+type Props = {
+  userId: string;
+};
 
 const tagSchema = z.object({
   name: z.string().min(1, {
@@ -26,13 +30,16 @@ const tagSchema = z.object({
 });
 
 const CreateTagForm = (props: Props) => {
+  const [submit, setSubmit] = useState(false);
+
   const router = useRouter();
   const form = useForm<z.infer<typeof tagSchema>>({
     resolver: zodResolver(tagSchema),
     defaultValues: {},
   });
   function onSubmit(values: z.infer<typeof tagSchema>) {
-    createTag(values.name);
+    setSubmit(!submit)
+    createTag(values.name, props.userId);
     router.refresh();
     router.back();
   }
@@ -57,7 +64,14 @@ const CreateTagForm = (props: Props) => {
             <Link className={`${buttonVariants()} mx-2`} href={"/"}>
               Back
             </Link>
-            <Button type="submit">Submit</Button>
+            {submit === false ? (
+              <Button type="submit">Submit</Button>
+            ) : (
+              <Button disabled>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
+              </Button>
+            )}
           </div>
         </form>
       </Form>

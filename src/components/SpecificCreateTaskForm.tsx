@@ -16,6 +16,8 @@ import { Input } from "@/components/ui/input";
 import { buttonVariants } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { createTaskSpecific } from "../lib/taskFunctions";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   userId: string;
@@ -29,6 +31,7 @@ const taskSchema = z.object({
 });
 
 const CreateTaskFormSpecific = (props: Props) => {
+  const [submit, setSubmit] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
@@ -36,6 +39,7 @@ const CreateTaskFormSpecific = (props: Props) => {
   });
 
   async function onSubmit(values: z.infer<typeof taskSchema>) {
+    setSubmit(!submit)
     createTaskSpecific(values.name, props.userId, props.taskId);
     router.back();
     router.refresh();
@@ -60,7 +64,14 @@ const CreateTaskFormSpecific = (props: Props) => {
           />
           <div className="flex justify-end">
             <Button onClick={() => router.back()} className="mx-2">Back</Button>
-            <Button type="submit">Submit</Button>
+            {submit === false ? (
+              <Button type="submit">Submit</Button>
+            ) : (
+              <Button disabled>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
+              </Button>
+            )}
           </div>
         </form>
       </Form>

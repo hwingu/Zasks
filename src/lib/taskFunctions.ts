@@ -61,10 +61,19 @@ export async function updateTag(name: string, tagId: string, taskId:string) {
   });
 }
 
-export async function createTag(name:string){
+export async function createTag(name:string,userId:string){
   const createTag = await prisma.tags.create({
     data: {
       name:name,
+      userId:userId
+    }
+  })
+}
+
+export async function deleteTag(id:string){
+  const deleteTag = await prisma.tags.delete({
+    where: {
+      id: id,
     }
   })
 }

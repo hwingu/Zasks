@@ -13,7 +13,7 @@ const TaskItemCount = async (props: Props) => {
           taskId: props.task.id,
         },
       })) >= 1 ? (
-        <Badge className="bg-slate-200 text-slate-900 rounded-md">
+        <Badge className="bg-slate-200 text-slate-900 rounded-md mr-1">
           {prisma.tasks.count({
             where: {
               taskId: props.task.id,
