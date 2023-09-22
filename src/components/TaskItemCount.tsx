@@ -6,19 +6,18 @@ type Props = {
 };
 
 const TaskItemCount = async (props: Props) => {
+  const count = await prisma.tasks.count({
+    where: {
+      taskId: props.task.id,
+    }
+  })
+  
+  
   return (
     <>
-      {(await prisma.tasks.count({
-        where: {
-          taskId: props.task.id,
-        },
-      })) >= 1 ? (
+      {count >= 1 ? (
         <Badge className="bg-slate-200 text-slate-900 rounded-md mr-1">
-          {prisma.tasks.count({
-            where: {
-              taskId: props.task.id,
-            },
-          })}
+          {count}
         </Badge>
       ) : null}
     </>

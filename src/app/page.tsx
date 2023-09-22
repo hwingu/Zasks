@@ -1,18 +1,14 @@
-import { auth } from "@clerk/nextjs";
 import { prisma } from "../lib/db";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import TaskItem from "@/components/TaskItem";
-import { UserButton } from "@clerk/nextjs";
+import { getAuthSession } from "@/lib/auth";
+import NavBar from "@/components/NavBar";
+import LoadingBar from "@/components/LoadingBar";
 
 export default async function Home() {
-  const user = auth();
-
-  const id = user.userId as string;
-
+  const session = await getAuthSession();
   const tasks = await prisma.tasks.findMany({
     where: {
-      userId: id,
+      userId: session?.user?.id ?? "",
       taskId: "",
     },
     include: {
@@ -20,25 +16,10 @@ export default async function Home() {
     },
   });
 
-  
-
-
-
   return (
     <main className="">
-      <div className="flex justify-between border-b px-4 h-16 items-center">
-        <h1 className="text-2xl font-extrabold">Zasks</h1>
-        <div className="flex ">
-          <Button asChild>
-            <Link href={"/newTag"}>Create tag</Link>
-          </Button>
-          <Button asChild className="mx-2">
-            <Link href={"/newTask"}>New</Link>
-          </Button>
-          <UserButton />
-        </div>
-      </div>
-      <div className="container mx-auto">
+      <NavBar />
+      <div className="container mx-auto mt-24">
         <TaskItem tasks={tasks} />
       </div>
     </main>

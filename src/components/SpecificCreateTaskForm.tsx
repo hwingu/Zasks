@@ -18,19 +18,20 @@ import { useRouter } from "next/navigation";
 import { createTaskSpecific } from "../lib/taskFunctions";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 type Props = {
-  userId: string;
   taskId: string;
 };
 
 const taskSchema = z.object({
   name: z.string().min(1, {
-    message: "Task cannot be empty",
+    message: "Tag cannot be empty",
   }),
 });
 
 const CreateTaskFormSpecific = (props: Props) => {
+  const {data:session} = useSession();
   const [submit, setSubmit] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof taskSchema>>({
@@ -40,7 +41,7 @@ const CreateTaskFormSpecific = (props: Props) => {
 
   async function onSubmit(values: z.infer<typeof taskSchema>) {
     setSubmit(!submit)
-    createTaskSpecific(values.name, props.userId, props.taskId);
+    createTaskSpecific(values.name, session?.user.id, props.taskId);
     router.back();
     router.refresh();
   }
@@ -65,7 +66,7 @@ const CreateTaskFormSpecific = (props: Props) => {
           <div className="flex justify-end">
             <Button onClick={() => router.back()} className="mx-2">Back</Button>
             {submit === false ? (
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Create</Button>
             ) : (
               <Button disabled>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

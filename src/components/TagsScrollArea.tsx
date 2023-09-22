@@ -1,6 +1,8 @@
 import React from "react";
 import { ScrollArea } from "./ui/scroll-area";
 import TagOptions from "./TagOptions";
+import { Button, buttonVariants } from "./ui/button";
+import Link from "next/link";
 
 type Props = {
   tags: any;
@@ -12,10 +14,9 @@ const TagsScrollArea = async (props: Props) => {
     <ScrollArea className="h-[200px] w-[250px] rounded-md p-2">
       {props.tags.length === 0 ? (
         <div className="flex flex-col text-center">
-          <h1 className="text-sm font-bold">{`No tags available :(`}</h1>
-          <br />
-          <h1 className="text-sm">{`Add a new tag with 'Create tag'!`}</h1>
-            </div>
+          <h1 className="text-md font-bold">No tags available</h1>
+          <Link href={"/newTag"} className={`${buttonVariants({variant:"default"})} my-2`}>Create New Tag</Link>
+        </div>
       ) : (
         props.tags.map((tag: any) => (
           <div className="flex flex-col align-top" key={tag.id}>

@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,13 +16,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { buttonVariants } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { createTask } from "../lib/taskFunctions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
+import { useSession } from "next-auth/react";
 
-type Props = {
-  userId: string;
-};
+type Props = {};
 
 const taskSchema = z.object({
   name: z.string().min(1, {
@@ -30,18 +29,26 @@ const taskSchema = z.object({
 });
 
 const CreateTaskForm = (props: Props) => {
+  const { data: session } = useSession();
   const [submit, setSubmit] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof taskSchema>>({
     resolver: zodResolver(taskSchema),
     defaultValues: {},
   });
+  
 
   async function onSubmit(values: z.infer<typeof taskSchema>) {
     setSubmit(!submit);
-    createTask(values.name, props.userId);
-    router.back();
-    router.refresh();
+    const createTask = async () => {
+      await fetch("/api/tasks", {
+        method: "POST",
+        body: JSON.stringify({ name: `${values.name}` }),
+      });
+      router.back();
+      router.refresh();
+    };
+    createTask();
   }
 
   return (
@@ -66,7 +73,7 @@ const CreateTaskForm = (props: Props) => {
               Back
             </Link>
             {submit === false ? (
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Create</Button>
             ) : (
               <Button disabled>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

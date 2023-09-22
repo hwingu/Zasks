@@ -48,7 +48,7 @@ export async function updateComplete(id: string, completed: boolean) {
   });
 }
 
-export async function updateTag(name: string, tagId: string, taskId:string) {
+export async function updateTag( tagId: string, taskId:string) {
   const createdTag = await prisma.tasks.update({
     where: {
       id: taskId

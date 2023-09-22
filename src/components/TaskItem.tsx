@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import CheckBoxAndTitle from "./CheckBoxAndTitle";
 import DeleteButton from "./DeleteButton";
@@ -16,18 +16,24 @@ const TaskItem = async (props: Props) => {
   const tags = await prisma.tags.findMany();
   return (
     <>
-      {props.tasks.map(async (task: any) => {
+      {props.tasks.map((task: any) => {
         return (
-          <div className="my-4 py-4 px-2 border border-slate-300 rounded-lg" key={task.id}>
+          <div
+            className="my-4 py-4 px-2 border border-slate-300 rounded-lg"
+            key={task.id}
+          >
             <div className="flex justify-between ">
-              <div className="items-top flex space-x-2 max-w-xs truncate lg:max-w-2xl">
+              <div className="items-top flex space-x-2 max-w-xs lg:max-w-2xl">
                 <CheckBoxAndTitle
                   taskId={task.id}
                   taskCompleted={task.completed}
                 />
                 <div className="">
-                  <Link href={`/${task.id}?taskName=${task.name}`} className="hover:bg-opacity-75">
-                    <label
+                  <Link
+                    href={`/${task.id}?taskName=${task.name}`}
+                    className="hover:bg-opacity-75"
+                  >
+                    <p
                       className={
                         !task.completed
                           ? "flex text-sm font-medium leading-none my-auto hover:cursor-pointer"
@@ -35,7 +41,7 @@ const TaskItem = async (props: Props) => {
                       }
                     >
                       {task.name}
-                    </label>
+                    </p>
 
                     <TaskItemCount task={task} />
                     <TaskItemBadge task={task} />

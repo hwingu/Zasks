@@ -15,13 +15,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { buttonVariants } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { createTag } from "../lib/taskFunctions";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
-type Props = {
-  userId: string;
-};
+type Props = {};
 
 const tagSchema = z.object({
   name: z.string().min(1, {
@@ -37,11 +34,19 @@ const CreateTagForm = (props: Props) => {
     resolver: zodResolver(tagSchema),
     defaultValues: {},
   });
+
   function onSubmit(values: z.infer<typeof tagSchema>) {
-    setSubmit(!submit)
-    createTag(values.name, props.userId);
-    router.refresh();
-    router.back();
+    setSubmit(!submit);
+    const createTag = async () => {
+      await fetch("/api/tags", {
+        method: "POST",
+        body: JSON.stringify({ name: `${values.name}` }),
+      });
+      router.refresh();
+      router.back();
+    };
+
+    createTag();
   }
   return (
     <div className="container mx-auto">
@@ -65,7 +70,7 @@ const CreateTagForm = (props: Props) => {
               Back
             </Link>
             {submit === false ? (
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Create</Button>
             ) : (
               <Button disabled>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

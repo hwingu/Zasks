@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { Button } from "./ui/button";
-import { updateTag, deleteTag } from "@/lib/taskFunctions";
 import { useRouter } from "next/navigation";
 import { TrashIcon } from "lucide-react";
 
@@ -10,25 +9,37 @@ type Props = {
   task: any;
 };
 
-const TagOptions = (props: Props) => {
+const TagOptions = ({ tag, task }: Props) => {
   const router = useRouter();
+  const deleteTag = async () => {
+    await fetch("/api/tags", {
+      method: "DELETE",
+      body: JSON.stringify({ tagId: `${tag.id}` }),
+    });
+    router.refresh();
+  };
+  const updateTag = async () => {
+    await fetch("/api/tags", {
+      method: "PATCH",
+      body: JSON.stringify({  taskId: `${task.id}`, tagId: `${tag.id}` }),
+    });
+    router.refresh();
+  };
   return (
     <div className="flex">
       <Button
-        key={props.tag.id}
+        key={tag.id}
         variant={"ghost"}
         className="p-1 mb-1 cursor-pointer w-4/5 hover:opacity-80"
         onClick={() => {
-          updateTag(props.tag.name, props.tag.id, props.task.id);
-          router.refresh();
+          updateTag();
         }}
       >
-        {props.tag.name}
+        {tag.name}
       </Button>
       <TrashIcon
         onClick={() => {
-          deleteTag(props.tag.id);
-          router.refresh();
+          deleteTag();
         }}
         className="m-auto h-8 w-8 rounded-lg p-2 cursor-pointer hover:bg-red-400"
       />
