@@ -26,11 +26,11 @@ const TagOptions = ({ tag, task }: Props) => {
     router.refresh();
   };
   return (
-    <div className="flex">
+    <div className="flex rounded-none">
       <Button
         key={tag.id}
         variant={"ghost"}
-        className="p-1 mb-1 cursor-pointer w-4/5 hover:opacity-80"
+        className="mb-1 cursor-pointer w-4/5 hover:opacity-80"
         onClick={() => {
           updateTag();
         }}
@@ -41,7 +41,7 @@ const TagOptions = ({ tag, task }: Props) => {
         onClick={() => {
           deleteTag();
         }}
-        className="m-auto h-8 w-8 rounded-lg p-2 cursor-pointer hover:bg-red-400"
+        className="m-auto h-8 w-8 rounded-lg p-2 cursor-pointer hover:bg-red-500"
       />
     </div>
   );

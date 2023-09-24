@@ -44,8 +44,8 @@ const TaskItem = async (props: Props) => {
                     </p>
 
                     <TaskItemCount task={task} />
-                    <TaskItemBadge task={task} />
                   </Link>
+                  <TaskItemBadge task={task} />
                   <AddTaskItemBadge task={task} tags={tags} />
                 </div>
               </div>
