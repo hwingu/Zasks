@@ -10,8 +10,8 @@ const TaskItemBadge = ({task}: Props) => {
   return (
     <>
       {task.tags.map((tag: any) => (
-        <Badge className={`rounded-md mr-1 inline-block`} >
-          <BadgeDeleteButton tagId={tag.id} taskId={task.id}/>
+        <Badge className={`rounded-md mr-1 inline-block px-1`} >
+          <BadgeDeleteButton tag={tag} task={task}/>
           {tag.name}
         </Badge>
       ))}

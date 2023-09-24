@@ -10,6 +10,7 @@ type Props = {
 };
 
 const TagOptions = ({ tag, task }: Props) => {
+  const tagColour = tag.colour
   const router = useRouter();
   const deleteTag = async () => {
     await fetch("/api/tags", {

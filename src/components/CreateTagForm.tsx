@@ -17,6 +17,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
+import { HexColorPicker } from "react-colorful";
 
 type Props = {};
 
@@ -28,6 +29,7 @@ const tagSchema = z.object({
 
 const CreateTagForm = (props: Props) => {
   const [submit, setSubmit] = useState(false);
+
 
   const router = useRouter();
   const form = useForm<z.infer<typeof tagSchema>>({
@@ -65,6 +67,7 @@ const CreateTagForm = (props: Props) => {
               </FormItem>
             )}
           />
+
           <div className="flex justify-end">
             <Link className={`${buttonVariants()} mx-2`} href={"/"}>
               Back

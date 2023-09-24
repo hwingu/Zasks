@@ -3,28 +3,26 @@ import React from "react";
 import { useRouter } from "next/navigation";
 
 type Props = {
-  tagId: string;
-  taskId: string;
+  tag: any;
+  task: any;
 };
 
-const BadgeDeleteButton = ({ tagId, taskId }: Props) => {
+const BadgeDeleteButton = ({ tag, task }: Props) => {
   const router = useRouter();
   const deleteBadge = async () => {
     await fetch("/api/tags", {
       method: "PUT",
-      body: JSON.stringify({ taskId: `${ taskId }`, tagId: `${ tagId }` }),
+      body: JSON.stringify({ taskId: `${task.id}`, tagId: `${tag.id}` }),
     });
     router.refresh();
   };
   return (
-    <div className="bg-red-500 rounded-full h-2.5 w-2.5 inline-block mr-1 my-auto">
-      <button
-        className="opacity-0 text-xs text-zinc-200 hover:opacity-100 duration-200"
-        onClick={() => deleteBadge()}
-      >
-        x
-      </button>
-    </div>
+    <button
+      className="opacity-0 text-xs text-zinc-200 bg-red-500 rounded-full mr-1 px-1 text-center hover:opacity-100 duration-200 "
+      onClick={() => deleteBadge()}
+    >
+      x
+    </button>
   );
 };
 

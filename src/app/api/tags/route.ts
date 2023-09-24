@@ -5,7 +5,7 @@ import { prisma } from "@/lib/db";
 export async function POST(req: Request, res: Response) {
   const session = await getAuthSession();
   const body = await req.json();
-  const { name } = body;
+  const { name, colour } = body;
 
   if (!session?.user) {
     return NextResponse.json(
