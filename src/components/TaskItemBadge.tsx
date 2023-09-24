@@ -6,12 +6,12 @@ type Props = {
   task: any;
 };
 
-const TaskItemBadge = (props: Props) => {
+const TaskItemBadge = ({task}: Props) => {
   return (
     <>
-      {props.task.tags.map((tag: any) => (
-        <Badge className="rounded-md mr-1 inline-block hover:" >
-          <BadgeDeleteButton />
+      {task.tags.map((tag: any) => (
+        <Badge className={`rounded-md mr-1 inline-block`} >
+          <BadgeDeleteButton tagId={tag.id} taskId={task.id}/>
           {tag.name}
         </Badge>
       ))}

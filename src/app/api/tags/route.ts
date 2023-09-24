@@ -27,38 +27,37 @@ export async function DELETE(req: Request, res: Response) {
   const body = await req.json();
   const { tagId } = body;
 
-    const deleteTag = await prisma.tags.delete({
-      where: {
-        id: tagId,
-      },
-    });
-  }
-
-export async function PUT(req:Request, res:Response){
-
-  const body = await req.json()
-  const {taskId, tagId} = body
-
-  const deleteTagSpecific = await prisma.tasks.delete({
+  const deleteTag = await prisma.tags.delete({
     where: {
-      id:taskId
+      id: tagId,
     },
-    include: {
-      tags: {
-        where: {
-          id: tagId,
-        }
-      }
-    }
-  })
+  });
+  return NextResponse.json({ tagId: { tagId } });
 }
-  
+
+export async function PUT(req: Request, res: Response) {
+  const body = await req.json();
+  const { taskId, tagId } = body;
+
+  const deleteTagSpecific = await prisma.tasks.update({
+    where: {
+      id: taskId,
+    },
+    data: {
+      tags: {
+        disconnect: {
+          id: tagId,
+        },
+      },
+    },
+  });
+  return NextResponse.json({ message: "tag deleted" });
+}
 
 export async function PATCH(req: Request, res: Response) {
   const body = await req.json();
   const { taskId, tagId } = body;
 
-  
   const connectTag = await prisma.tasks.update({
     where: {
       id: taskId,
@@ -69,6 +68,5 @@ export async function PATCH(req: Request, res: Response) {
       },
     },
   });
-  return NextResponse.json({message: "Tag successfully created."})
+  return NextResponse.json({ message: "Tag successfully created." });
 }
-
