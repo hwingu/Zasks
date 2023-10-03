@@ -1,6 +1,6 @@
 # Zasks
 
-A folder-style task management app
+A folder-style task management application
 
 ## Features
 
